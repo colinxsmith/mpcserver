@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-python /home/pi/mpcserver/server.py
+python /home/colin/mpcserver/server.py
