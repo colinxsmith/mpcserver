@@ -1,11 +1,8 @@
 [Unit]
 Description=mpcserver 
 After=network.target
-StartLimitInervalSec=0
 
 [Service]
-Type=simple
-Restart=always
 ExecStart=/usr/local/bin/mpcserver
 
 [Install]
