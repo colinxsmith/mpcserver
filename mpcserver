@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+python ~/mpcserver/server.py
