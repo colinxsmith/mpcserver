@@ -1,6 +1,8 @@
  #!/usr/bin/bash
+ sed -i "s/colin/pi/" mpcserver
  sudo cp mpcserver /usr/local/bin
  sudo cp mpcserver.service /etc/systemd/system
  sudo systemctl daemon-reload
  sudo systemctl start mpcserver
+ sudo systemctl enable mpcserver
  systemctl status mpcserver.service
