@@ -8,7 +8,9 @@ def index():
    if request.method == 'GET':
       value = request.args.get('value')
       system('mpc play %s'%value)
-      return 'OK'
+      system('mpc > dd')
+      ff=open('dd')
+      return ff.readline()
    else:
       return 'Use GET requests'
 
