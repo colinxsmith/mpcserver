@@ -1,4 +1,4 @@
-from flask import Flask, request 
+from flask import Flask, jsonify, request 
 from os import system
 
 app = Flask(__name__)
@@ -10,7 +10,9 @@ def index():
       system('mpc play %s'%value)
       system('mpc > dd')
       ff=open('dd')
-      return ff.readline()
+     
+      back='{status:"%s"}'%ff.readline()
+      return jsonify(back)
    else:
       return 'Use GET requests'
 
