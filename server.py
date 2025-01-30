@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request 
 from os import system
+import subprocess
 
 app = Flask(__name__)
 
@@ -7,13 +8,13 @@ app = Flask(__name__)
 def index():
    if request.method == 'GET':
       value = request.args.get('value')
-      system('mpc play %s'%value)
-      system('mpc > dd')
-      ff=open('dd')
-     
-      back='{status:"%s"}'%ff.readline()
-      jason={'status':'%s'% ff.readline(),}
-      return jsonify(jason)
+      back={}
+      back['value'] = value
+      if value!='':
+         subprocess.getoutput('mpc play %s' % value)
+      back['status'] = subprocess.getoutput('mpc')
+      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      return jsonify(back)
    else:
       return 'Use GET requests'
 
