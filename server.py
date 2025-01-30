@@ -12,7 +12,8 @@ def index():
       ff=open('dd')
      
       back='{status:"%s"}'%ff.readline()
-      return jsonify(back)
+      jason={'status':'%s'% ff.readline(),}
+      return jason
    else:
       return 'Use GET requests'
 
