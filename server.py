@@ -32,9 +32,12 @@ def index():
             subprocess.getoutput('mpc seek %s'%seek)
          else:
             subprocess.getoutput('mpc seek %s'%seek+'%')
-      except:seek='0%';subprocess.getoutput('mpc seek 0%')
+      except:
+         seek='0%'
+         subprocess.getoutput('mpc seek 0%')
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['seek']=seek
       return [back]
    else:
       return 'Use GET requests'
