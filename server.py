@@ -14,7 +14,7 @@ def index():
          subprocess.getoutput('mpc play %s' % value)
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-      return back
+      return [back]
    else:
       return 'Use GET requests'
 
