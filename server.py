@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request 
+from flask import Flask, request 
 from os import system
 import subprocess
 
@@ -14,7 +14,7 @@ def index():
          subprocess.getoutput('mpc play %s' % value)
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-      return jsonify(back)
+      return back
    else:
       return 'Use GET requests'
 
