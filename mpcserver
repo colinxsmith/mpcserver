@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-python /home/pi/mpcserver/server.py > /home/pi/log$(date +-%d-%m-%Y)
+python /home/pi/mpcserver/server.py > /home/pi/log$(date +%d-%m-%Y)
