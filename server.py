@@ -1,5 +1,6 @@
 from flask import Flask, request 
 from flask_cors import CORS
+from os import system
 
 
 import subprocess
@@ -28,7 +29,8 @@ def index():
       back={}
       back['value'] = value
       if value!='':
-         subprocess.getoutput('mpc play %s' % value)
+          back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
+          while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
       try:
          if seek.find('%')>-1:
             subprocess.getoutput('mpc seek %s'%seek)
