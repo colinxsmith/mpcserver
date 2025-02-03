@@ -28,15 +28,15 @@ def index():
       seek = request.args.get('seek')
       back={}
       back['value'] = value
-      if value!='':
+      if value!= None:
           back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
-      try:
+      if seek != None:
          if seek.find('%')>-1:
             subprocess.getoutput('mpc seek %s'%seek)
          else:
             subprocess.getoutput('mpc seek %s'%seek+'%')
-      except:
+      else:
          seek='0%'
          subprocess.getoutput('mpc seek 0%')
       back['status'] = subprocess.getoutput('mpc')
