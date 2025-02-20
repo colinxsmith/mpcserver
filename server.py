@@ -26,8 +26,11 @@ def index():
    if request.method == 'GET':
       value = request.args.get('value')
       seek = request.args.get('seek')
+      filemp3 = request.args.get('mp3')
       back={}
       back['value'] = value
+      if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
+      back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       if value!= None:
           back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
@@ -36,11 +39,16 @@ def index():
             subprocess.getoutput('mpc seek %s'%seek)
          else:
             subprocess.getoutput('mpc seek %s'%seek+'%')
-      else:
-         seek='0%'
-         subprocess.getoutput('mpc seek 0%')
+      #else:
+      #   seek='0%'
+      #   subprocess.getoutput('mpc seek %s'%seek)
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
+      if filemp3!=None:
+          back['filemp3'] = '/home/pi/sound/'+filemp3
+          print('cp %s /home/pi/Music/j3hour.mp3'% back['filemp3'] )
+          subprocess.getoutput('cp %s /home/pi/Music/j3hour.mp3'% back['filemp3'] )
       back['seek']=seek
       return [back]
    else:
