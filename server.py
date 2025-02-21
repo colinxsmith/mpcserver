@@ -44,7 +44,6 @@ def index():
       #   seek='0%'
       #   subprocess.getoutput('mpc seek %s'%seek)
       back['status'] = subprocess.getoutput('mpc')
-      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       if filemp3!=None:
           back['filemp3'] = '/home/pi/sound/'+filemp3
@@ -53,6 +52,7 @@ def index():
       if remove!=None:
           back['dellog']=subprocess.getoutput('mpc del %s'%remove)
           back['remove']='deleted %s'% remove 
+      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['seek']=seek
       return [back]
    else:
