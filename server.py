@@ -28,6 +28,7 @@ def index():
       seek = request.args.get('seek')
       filemp3 = request.args.get('mp3')
       remove=request.args.get('remove')
+      update=request.args.get('update')
       back={}
       back['value'] = value
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
@@ -52,6 +53,10 @@ def index():
       if remove!=None:
           back['dellog']=subprocess.getoutput('mpc del %s'%remove)
           back['remove']='deleted %s'% remove 
+      if update!=None:
+          request.args.get('mpc rescan')
+          request.args.get('mpc update')
+          back['update']='music database rescanned and updated'
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['seek']=seek
       return [back]
