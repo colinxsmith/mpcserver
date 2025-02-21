@@ -20,6 +20,7 @@ def helloWorld():
       back={}
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       return [back]
 @app.route('/dave', methods=[ 'GET'])
 def index():
