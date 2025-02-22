@@ -46,7 +46,6 @@ def index():
       #   seek='0%'
       #   subprocess.getoutput('mpc seek %s'%seek)
       back['status'] = subprocess.getoutput('mpc')
-      back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       if filemp3!=None:
           back['filemp3'] = '/home/pi/sound/'+filemp3
           print('cp %s /home/pi/Music/j3hour.mp3'% back['filemp3'] )
@@ -59,6 +58,7 @@ def index():
           request.args.get('mpc update')
           back['update']='music database rescanned and updated'
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['seek']=seek
       return [back]
    else:
