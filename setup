@@ -5,4 +5,4 @@
  sudo systemctl daemon-reload
  sudo systemctl start mpcserver
  sudo systemctl enable mpcserver
- systemctl status mpcserver.service
+ systemctl status mpcserver.service -l --no-pager
