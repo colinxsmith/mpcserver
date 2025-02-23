@@ -30,6 +30,7 @@ def index():
       filemp3 = request.args.get('mp3')
       remove=request.args.get('remove')
       update=request.args.get('update')
+      fix=request.args.get('fix')
       back={}
       back['value'] = value
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
@@ -53,6 +54,9 @@ def index():
       if remove!=None:
           back['dellog']=subprocess.getoutput('mpc del %s'%remove)
           back['remove']='deleted %s'% remove 
+      if fix!=None:
+          subprocess.getoutput('sed "/status/d" /home/pi/mpcserver/update | sh' )
+
       if update!=None:
           request.args.get('mpc rescan')
           request.args.get('mpc update')
