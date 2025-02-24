@@ -1,0 +1,5 @@
+ #!/usr/bin/bash
+ cd /var/www/html/
+ sudo unzip /home/pi/mpcserver/plaympc.zip 
+ sudo rm -rf plaympc/
+ sudo mv build/ plaympc
