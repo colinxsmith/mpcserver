@@ -31,13 +31,19 @@ def index():
       remove=request.args.get('remove')
       update=request.args.get('update')
       fix=request.args.get('fix')
+      insert=request.args.get('insert')
       back={}
       back['value'] = value
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
+      if insert!=None:
+          back['inserted']=system('mpc insert %s ' % insert)
+
       if value!= None:
           back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
+      back['songs']=subprocess.getoutput('mpc ls').split('\n')
+
       if seek != None:
          if seek.find('%')>-1:
             subprocess.getoutput('mpc seek %s'%seek)
@@ -55,7 +61,8 @@ def index():
           back['dellog']=subprocess.getoutput('mpc del %s'%remove)
           back['remove']='deleted %s'% remove 
       if fix!=None:
-          subprocess.getoutput('sed "/status/d" /home/pi/mpcserver/update | sh' )
+          back['serverstart']=subprocess.getoutput('/home/pi/mpcserver/update' )
+      back['serverstart']=subprocess.getoutput('sed -n "/pager/p" /home/pi/mpcserver/update | sh' )
 
       if update!=None:
           request.args.get('mpc rescan')
