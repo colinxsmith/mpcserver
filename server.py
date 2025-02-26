@@ -21,6 +21,7 @@ def helloWorld():
       back['status'] = subprocess.getoutput('mpc')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
       return [back]
 @app.route('/dave', methods=[ 'GET'])
 def index():
@@ -33,6 +34,8 @@ def index():
       fix=request.args.get('fix')
       insert=request.args.get('insert')
       back={}
+      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
+
       back['value'] = value
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
@@ -42,7 +45,6 @@ def index():
       if value!= None:
           back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
-      back['songs']=subprocess.getoutput('mpc ls').split('\n')
 
       if seek != None:
          if seek.find('%')>-1:
