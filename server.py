@@ -19,10 +19,10 @@ def add_headers(response):
 def helloWorld():
       back={}
       back['status'] = subprocess.getoutput('mpc')
-      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
-      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
       back['stations'] = subprocess.getoutput('cat  /home/pi/sound/WorldwideFM.m3u').split('\n')
+      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
       return [back]
 @app.route('/dave', methods=[ 'GET'])
 def index():
@@ -36,6 +36,7 @@ def index():
       insert=request.args.get('insert')
       insert_station=request.args.get('station')
       back={}
+      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
       back['stations'] = subprocess.getoutput('cat  /home/pi/sound/WorldwideFM.m3u').split('\n')
 
@@ -47,6 +48,7 @@ def index():
 
       if insert_station!=None:
           #insert_station=insert_station.replace('%26','&')
+          #insert_station=insert_station.replace('%21','!')
           back['inserted_station']=system('mpc insert "%s" ' % insert_station)
 
       if value!= None:
@@ -77,9 +79,10 @@ def index():
           request.args.get('mpc rescan')
           request.args.get('mpc update')
           back['update']='music database rescanned and updated'
-      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['seek']=seek
+      back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
       return [back]
    else:
       return 'Use GET requests'
