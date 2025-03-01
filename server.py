@@ -22,7 +22,7 @@ def helloWorld():
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['stations'] = subprocess.getoutput('cat  /home/pi/sound/WorldwideFM.m3u').split('\n')
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls').split('\n')
       return [back]
 @app.route('/dave', methods=[ 'GET'])
 def index():
@@ -37,14 +37,14 @@ def index():
       insert_station=request.args.get('station')
       back={}
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls').split('\n')
       back['stations'] = subprocess.getoutput('cat  /home/pi/sound/WorldwideFM.m3u').split('\n')
 
       back['value'] = value
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       if insert!=None:
-          back['inserted']=system('mpc insert %s ' % insert)
+          back['inserted']=system('mpc insert "%s" ' % insert)
 
       if insert_station!=None:
           #insert_station=insert_station.replace('%26','&')
@@ -82,7 +82,7 @@ def index():
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['seek']=seek
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-      back['songs'] = subprocess.getoutput('mpc ls | sed -n "/mp3/p"').split('\n')
+      back['songs'] = subprocess.getoutput('mpc ls').split('\n')
       return [back]
    else:
       return 'Use GET requests'
