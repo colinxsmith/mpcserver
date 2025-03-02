@@ -1,6 +1,5 @@
 from flask import Flask, request 
 from flask_cors import CORS
-from os import system
 
 
 import subprocess
@@ -44,16 +43,18 @@ def index():
       if filemp3!=None:back['filemp3'] = '/home/pi/sound/'+filemp3
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       if insert!=None:
-          back['inserted']=system('mpc insert "%s" ' % insert)
+          insert=insert.replace('%26','&')
+          insert=insert.replace('%21','!')
+          back['inserted']=subprocess.getoutput('mpc insert "%s" ' % insert)
 
       if insert_station!=None:
-          #insert_station=insert_station.replace('%26','&')
-          #insert_station=insert_station.replace('%21','!')
-          back['inserted_station']=system('mpc insert "%s" ' % insert_station)
+          insert_station=insert_station.replace('%26','&')
+          insert_station=insert_station.replace('%21','!')
+          back['inserted_station']=subprocess.getoutput('mpc insert "%s" ' % insert_station)
 
       if value!= None:
-          back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
-          while back['checkplay'] == 256:back['checkplay']=system('sleep 1;mpc play %s 1>/dev/null' % value)
+          back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
+          while back['checkplay'] == 256:back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
 
       if seek != None:
          if seek.find('%')>-1:
@@ -76,8 +77,8 @@ def index():
       back['serverstart']=subprocess.getoutput('sed -n "/pager/p" /home/pi/mpcserver/update | sh' )
 
       if update!=None:
-          request.args.get('mpc rescan')
-          request.args.get('mpc update')
+          request.args.get('mpc --wait rescan')
+          request.args.get('mpc --wait update')
           back['update']='music database rescanned and updated'
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['seek']=seek
