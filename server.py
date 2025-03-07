@@ -26,6 +26,7 @@ def helloWorld():
 @app.route('/dave', methods=[ 'GET'])
 def index():
    if request.method == 'GET':
+      record = request.args.get('record')
       value = request.args.get('value')
       seek = request.args.get('seek')
       filemp3 = request.args.get('mp3')
@@ -51,7 +52,9 @@ def index():
           insert_station=insert_station.replace('%26','&')
           insert_station=insert_station.replace('%21','!')
           back['inserted_station']=subprocess.getoutput('mpc insert "%s" ' % insert_station)
-
+      if record!= None:
+          back['report_record']=subprocess.getoutput('rm /home/pi/Music/wfm1.mp3')
+          back['report_record']+=subprocess.getoutput('ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/Music/wfm1.mp3'%record)
       if value!= None:
           back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
@@ -59,7 +62,7 @@ def index():
       if seek != None:
          if seek.find('%')>-1:
             subprocess.getoutput('mpc seek %s'%seek)
-         else:
+         elif seek!='-1':
             subprocess.getoutput('mpc seek %s'%seek+'%')
       #else:
       #   seek='0%'
@@ -77,7 +80,7 @@ def index():
       back['serverstart']=subprocess.getoutput('sed -n "/pager/p" /home/pi/mpcserver/update | sh' )
 
       if update!=None:
-          request.args.get('mpc --wait rescan')
+          request.args.get('mpc rescan')
           request.args.get('mpc --wait update')
           back['update']='music database rescanned and updated'
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
