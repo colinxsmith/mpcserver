@@ -53,15 +53,16 @@ def index():
           insert_station=insert_station.replace('%26','&')
           insert_station=insert_station.replace('%21','!')
           back['inserted_station']=subprocess.getoutput('mpc insert "%s" ' % insert_station)
-      back['report_record']=subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
       if record!= None:
           back['report_record']=subprocess.getoutput('rm /home/pi/Music/wfm1.mp3')
           back['report_record']+=subprocess.getoutput('ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/Music/wfm1.mp3'%record)
-          subprocess.getoutput('sudo id3v2 -y $(date +%y) /home/pi/Music/wfm1.mp3 ')
+          subprocess.getoutput('sudo id3v2 -y $(date +%Y) /home/pi/Music/wfm1.mp3 ')
           subprocess.getoutput('sudo id3v2 -A $(date +%d-%B) /home/pi/Music/wfm1.mp3') 
-          subprocess.getoutput('sudo id3v2 -t "Length %s" /home/pi/Music/wfm1.mp3'%record) 
+          subprocess.getoutput('sudo id3v2 -t "Length %s seconds" /home/pi/Music/wfm1.mp3'%record) 
           subprocess.getoutput('sudo id3v2 -a $(date +%H:%M:%S) /home/pi/Music/wfm1.mp3') 
-      back['report_record']+=subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
+          back['report_record']+=subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
+      else:
+          back['report_record']=subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
       if value!= None:
           back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
           while back['checkplay'] == 256:back['checkplay']=subprocess.getoutput('sleep 1;mpc play %s 1>/dev/null' % value)
