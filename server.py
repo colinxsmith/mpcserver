@@ -56,10 +56,10 @@ def index():
       if record!= None:
           back['report_record']=subprocess.getoutput('rm /home/pi/sound/wfm1.mp3')
           back['report_record']+=subprocess.getoutput('ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/sound/wfm1.mp3'%record)
-          subprocess.getoutput('sudo id3v2 -y $(date +%Y) /home/pi/sound/wfm1.mp3 ')
-          subprocess.getoutput('sudo id3v2 -a $(date +%d-%B) /home/pi/sound/wfm1.mp3') 
-          subprocess.getoutput('sudo id3v2 -t "World Wide Length %s seconds" /home/pi/sound/wfm1.mp3'%record) 
-          subprocess.getoutput('sudo id3v2 -A $(date +%H:%M:%S) /home/pi/sound/wfm1.mp3') 
+          subprocess.getoutput('id3v2 -y $(date +%Y) /home/pi/sound/wfm1.mp3 ')
+          subprocess.getoutput('id3v2 -a $(date +%d-%B) /home/pi/sound/wfm1.mp3') 
+          subprocess.getoutput('id3v2 -t "World Wide Length %s seconds" /home/pi/sound/wfm1.mp3'%record) 
+          subprocess.getoutput('id3v2 -A $(date +%H:%M:%S) /home/pi/sound/wfm1.mp3') 
           back['report_record']+=subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
           subprocess.getoutput('cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3')
       else:
@@ -89,9 +89,13 @@ def index():
       back['serverstart']=subprocess.getoutput('sed -n "/pager/p" /home/pi/mpcserver/update | sh' )
 
       if update!=None:
-          request.args.get('mpc rescan')
-          request.args.get('mpc --wait update')
-          back['update']='music database rescanned and updated'
+          back['update']=subprocess.getoutput('cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3')
+          back['update']+='\n'
+          back['update']+=subprocess.getoutout('mpc rescan')
+          back['update']+='\n'
+          back['update']+=subprocess.getoutout('mpc --wait update')
+          back['update']+='\n'
+          back['update']+='music database rescanned and updated'
       back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
       back['seek']=seek
       back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
