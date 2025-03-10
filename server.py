@@ -76,12 +76,12 @@ def index():
                 % record
             )
             subprocess.getoutput('id3v2 -y 2025 /home/pi/sound/wfm1.mp3 ')
-            subprocess.getoutput('id3v2 -a 09-March /home/pi/sound/wfm1.mp3')
+            subprocess.getoutput('id3v2 -a "$(date +%d-%B) Recording" /home/pi/sound/wfm1.mp3')
             subprocess.getoutput(
-                'id3v2 -t "World Wide Length %s seconds" /home/pi/sound/wfm1.mp3'
+                'id3v2 -t "World Wide FM (%s secs)" /home/pi/sound/wfm1.mp3'
                 % record
             )
-            subprocess.getoutput('id3v2 -A 21:28:52 /home/pi/sound/wfm1.mp3')
+            subprocess.getoutput('id3v2 -A $(date +%H:%M:%S) /home/pi/sound/wfm1.mp3')
             back['report_record'] += subprocess.getoutput(
                 'id3v2 -l /home/pi/Music/wfm1.mp3'
             )
