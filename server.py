@@ -123,12 +123,10 @@ def index():
 
         if update != None:
             back['update'] = subprocess.getoutput(
-                'cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3'
+                'cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3;mpc --wait update'
             )
             back['update'] += '\n'
-            back['update'] += subprocess.getoutout('mpc rescan')
-            back['update'] += '\n'
-            back['update'] += subprocess.getoutout('mpc --wait update')
+            back['update'] += subprocess.getoutput('mpc --wait rescan')
             back['update'] += '\n'
             back['update'] += 'music database rescanned and updated'
         back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
