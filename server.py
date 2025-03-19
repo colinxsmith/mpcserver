@@ -23,6 +23,7 @@ def add_headers(response):
 
 @app.route('/')
 def helloWorld():
+    wfm='wfm1.mp3'
     back = {}
     back['status'] = subprocess.getoutput('mpc')
     back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
@@ -30,13 +31,14 @@ def helloWorld():
         'cat  /home/pi/sound/WorldwideFM.m3u'
     ).split('\n')
     back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-    back['report_record'] = subprocess.getoutput('id3v2 -l /home/pi/Music/wfm1.mp3')
+    back['report_record'] = subprocess.getoutput('id3v2 -l /home/pi/Music/%s'%wfm)
     back['songs'] = subprocess.getoutput('mpc ls').split('\n')
     return [back]
 
 
 @app.route('/dave', methods=['GET'])
 def index():
+    wfm='wfm1.mp3'
     if request.method == 'GET':
         record = request.args.get('record')
         value = request.args.get('value')
@@ -70,25 +72,25 @@ def index():
                 'mpc insert "%s" ' % insert_station
             )
         if record != None:
-            back['report_record'] = subprocess.getoutput('rm /home/pi/sound/wfm1.mp3')
+            back['report_record'] = subprocess.getoutput('rm /home/pi/sound/%s'%wfm)
             back['report_record'] += subprocess.getoutput(
-                'ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/sound/wfm1.mp3'
-                % record
+                'ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/sound/%s'
+                % (record,wfm)
             )
-            subprocess.getoutput('id3v2 -y $(date +%Y) /home/pi/sound/wfm1.mp3 ')
-            subprocess.getoutput('id3v2 -a "$(date +%d-%B) Recording" /home/pi/sound/wfm1.mp3')
+            subprocess.getoutput('id3v2 -y $(date +%Y)'+' /home/pi/sound/%s '%wfm)
+            subprocess.getoutput('id3v2 -a "$(date +%d-%B) Recording"'+' /home/pi/sound/%s'%wfm)
             subprocess.getoutput(
-                'id3v2 -t "World Wide FM (%s secs)" /home/pi/sound/wfm1.mp3'
-                % record
+                'id3v2 -t "World Wide FM (%s secs)" /home/pi/sound/%s'
+                % (record,wfm)
             )
-            subprocess.getoutput('id3v2 -A $(date +%H:%M:%S) /home/pi/sound/wfm1.mp3')
+            subprocess.getoutput('id3v2 -A $(date +%H:%M:%S)'+' /home/pi/sound/%s'%wfm)
             back['report_record'] += subprocess.getoutput(
-                'id3v2 -l /home/pi/Music/wfm1.mp3'
+                'id3v2 -l /home/pi/Music/%s'%wfm
             )
-            subprocess.getoutput('cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3')
+            subprocess.getoutput('cp /home/pi/sound/%s /home/pi/Music/%s'%(wfm,wfm))
         else:
             back['report_record'] = subprocess.getoutput(
-                'id3v2 -l /home/pi/Music/wfm1.mp3'
+                'id3v2 -l /home/pi/Music/%s'%wfm
             )
         if value != None:
             back['checkplay'] = subprocess.getoutput(
@@ -123,7 +125,7 @@ def index():
 
         if update != None:
             back['update'] = subprocess.getoutput(
-                'cp /home/pi/sound/wfm1.mp3 /home/pi/Music/wfm1.mp3;mpc --wait update'
+                'cp /home/pi/sound/%s /home/pi/Music/%s;mpc --wait update' % (wfm,wfm)
             )
             back['update'] += '\n'
             back['update'] += subprocess.getoutput('mpc --wait rescan')
