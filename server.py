@@ -33,6 +33,11 @@ def helloWorld():
     back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
     back['report_record'] = subprocess.getoutput('id3v2 -l /home/pi/Music/%s'%wfm)
     back['songs'] = subprocess.getoutput('mpc ls').split('\n')
+    back['songs'] += subprocess.getoutput('mpc ls m4a').split('\n')
+    back['songs'] += subprocess.getoutput('mpc ls mp3').split('\n')
+    back['serverstart'] = subprocess.getoutput(
+        'sed -n "/pager/p" /home/pi/mpcserver/update | sh'
+    )
     return [back]
 
 
@@ -117,11 +122,6 @@ def index():
         if remove != None:
             back['dellog'] = subprocess.getoutput('mpc del %s' % remove)
             back['remove'] = 'deleted %s' % remove
-        if fix != None:
-            back['serverstart'] = subprocess.getoutput('/home/pi/mpcserver/update')
-        back['serverstart'] = subprocess.getoutput(
-            'sed -n "/pager/p" /home/pi/mpcserver/update | sh'
-        )
 
         if update != None:
             back['update'] = subprocess.getoutput(
@@ -135,6 +135,14 @@ def index():
         back['seek'] = seek
         back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
         back['songs'] = subprocess.getoutput('mpc ls').split('\n')
+        back['songs'] += subprocess.getoutput('mpc ls m4a').split('\n')
+        back['songs'] += subprocess.getoutput('mpc ls mp3').split('\n')
+        back['serverstart'] = ''
+        if fix != None:
+            back['serverstart'] += subprocess.getoutput('/home/pi/mpcserver/update')
+        back['serverstart'] += subprocess.getoutput(
+            'sed -n "/pager/p" /home/pi/mpcserver/update | sh'
+        )
         return [back]
     else:
         return 'Use GET requests'
