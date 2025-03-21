@@ -56,7 +56,6 @@ def index():
         insert_station = request.args.get('station')
         back = {}
         back['playlist'] = subprocess.getoutput('mpc playlist | cat -n').split('\n')
-        back['songs'] = subprocess.getoutput('mpc ls').split('\n')
         back['stations'] = subprocess.getoutput(
             'cat  /home/pi/sound/WorldwideFM.m3u'
         ).split('\n')
