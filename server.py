@@ -75,6 +75,7 @@ def index():
             back['inserted_station'] = subprocess.getoutput(
                 'mpc insert "%s" ' % insert_station
             )
+
         if record != None:
             back['report_record'] = subprocess.getoutput('rm /home/pi/sound/%s'%wfm)
             back['report_record'] += subprocess.getoutput(
@@ -92,6 +93,7 @@ def index():
                 'id3v2 -l /home/pi/Music/%s'%wfm
             )
             subprocess.getoutput('cp /home/pi/sound/%s /home/pi/Music/%s'%(wfm,wfm))
+            subprocess.getoutput('mpc --wait update')
         else:
             back['report_record'] = subprocess.getoutput(
                 'id3v2 -l /home/pi/Music/%s'%wfm
@@ -110,9 +112,6 @@ def index():
                 subprocess.getoutput('mpc seek %s' % seek)
             elif seek != '-1':
                 subprocess.getoutput('mpc seek %s' % seek + '%')
-        # else:
-        #   seek='0%'
-        #   subprocess.getoutput('mpc seek %s'%seek)
         back['status'] = subprocess.getoutput('mpc')
         if filemp3 != None:
             back['filemp3'] = '/home/pi/sound/' + filemp3
@@ -124,7 +123,8 @@ def index():
 
         if update != None:
             back['update'] = subprocess.getoutput(
-                'cp /home/pi/sound/%s /home/pi/Music/%s;mpc --wait update' % (wfm,wfm)
+               #'cp /home/pi/sound/%s /home/pi/Music/%s;mpc --wait update' % (wfm,wfm)
+                'mpc --wait update'
             )
             back['update'] += '\n'
             back['update'] += subprocess.getoutput('mpc --wait rescan')
