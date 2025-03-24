@@ -1,12 +1,18 @@
 FROM alpine
-#docker build -f Dockermpcserver --no-cache -t mpcserver .
+
+ARG MPD_HOST
+ENV MPD_HOST=$MPD_HOST
+
+#docker build -f Dockermpcserver --no-cache --build-arg MPD_HOST=192.168.0.37  -t mpcserver .
 #docker run  -p1310:1310 -v /home/colin/Music:/topper/sound --name colin  mpcserver
 
-RUN apk add python3 py3-flask py3-flask-cors id3lib
+RUN apk add python3 py3-flask py3-flask-cors id3lib-libs mpc
+ENV PATH=$PATH:/sbin
 WORKDIR /topper
 RUN mkdir mpcserver Music sound
 WORKDIR /topper/mpcserver
 COPY server.py /topper/mpcserver
+#COPY update /topper/mpcserver
 RUN sed -i "s|/home/pi|/topper|g" server.py
 EXPOSE 1310
 CMD ["python3","server.py"]
