@@ -67,11 +67,13 @@ def index():
         if insert != None:
             insert = insert.replace('%26', '&')
             insert = insert.replace('%21', '!')
+            insert = insert.replace('%23', '#')
             back['inserted'] = subprocess.getoutput('mpc insert "%s" ' % insert)
 
         if insert_station != None:
             insert_station = insert_station.replace('%26', '&')
             insert_station = insert_station.replace('%21', '!')
+            insert_station = insert_station.replace('%23', '#')
             back['inserted_station'] = subprocess.getoutput(
                 'mpc insert "%s" ' % insert_station
             )
