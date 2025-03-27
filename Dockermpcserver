@@ -1,21 +1,33 @@
-FROM alpine
+#FROM alpine
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
 #free port on linux
-#lsof -t -i tcp:1310 | xargs kill -9 (use sudo)
+#sudo lsof -t -i tcp:1310 | (xargs sudo kill -9 )(use sudo)
 
 ARG MPD_HOST
 ENV MPD_HOST=$MPD_HOST
 
 #docker build -f Dockermpcserver --no-cache --build-arg MPD_HOST=192.168.0.37  -t mpcserver .
-#docker run  -p1310:1310 -v /home/colin/Music:/topper/sound --name colin  mpcserver
+#docker run  -p1310:1310 -it --rm -v /home/colin/Music:/topper/sound --name=colin  mpcserver
+#docker image rm mpcserver
 
-RUN apk add python3 py3-flask py3-flask-cors  mpc
+#RUN apk add python3 py3-flask py3-flask-cors  mpc
+RUN apt update && apt upgrade -y && apt install -y mpc id3v2 
+RUN apt install -y python3 pip
+RUN apt install -y python3-venv
+RUN python3 -m venv mvenv
+RUN /mvenv/bin/pip install Flask flask_cors
 ENV PATH=$PATH:/sbin
+RUN apt install -y systemctl
 WORKDIR /topper
 RUN mkdir mpcserver Music sound
 WORKDIR /topper/mpcserver
 COPY server.py /topper/mpcserver
-#COPY update /topper/mpcserver
+COPY update /topper/mpcserver
+COPY setup /topper/mpcserver
+COPY mpcserver /topper/mpcserver
+COPY mpcserver.service /topper/mpcserver
 RUN sed -i "s|/home/pi|/topper|g" server.py
+RUN sed "s/sudo//g;/status/d" setup | sh
 EXPOSE 1310
-CMD ["python3","server.py"]
+CMD ["/mvenv/bin/python3","server.py"]
