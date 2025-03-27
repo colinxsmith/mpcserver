@@ -122,7 +122,7 @@ def index():
         if filemp3 != None:
             back['filemp3'] = '/home/pi/sound/' + filemp3
             print('cp %s /home/pi/Music/j3hour.mp3' % back['filemp3'])
-            subprocess.getoutput('cp %s /home/pi/Music/j3hour.mp3' % back['filemp3'])
+            subprocess.getoutput('cp %s /home/pi/Music/j3hour.mp3;mpc --wait update' % back['filemp3'])
         if remove != None:
             back['dellog'] = subprocess.getoutput('mpc del %s' % remove)
             back['remove'] = 'deleted %s' % remove
