@@ -66,6 +66,7 @@ def index():
         back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
         if insert != None:
             insert = insert.replace('%26', '&')
+            insert = insert.replace('%47', '/')
             insert = insert.replace('%58', ':')
             insert = insert.replace('%59', ';')
             insert = insert.replace('%21', '!')
@@ -75,6 +76,7 @@ def index():
         if insert_station != None:
             insert_station = insert_station.replace('%26', '&')
             insert_station = insert_station.replace('%58', ':')
+            insert_station = insert_station.replace('%47', '/')
             insert_station = insert_station.replace('%59', ';')
             insert_station = insert_station.replace('%21', '!')
             insert_station = insert_station.replace('%23', '#')
