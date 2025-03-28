@@ -1,0 +1,3 @@
+#!/bin/sh
+python /topper/server.py
+mpd $1 $2
