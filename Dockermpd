@@ -1,13 +1,14 @@
 FROM alpine:latest AS build
 #docker build -f Dockermpd --no-cache -t music .
-#docker run   --rm  -d     --name mpd     --device /dev/snd     -p 6600:6600     -p 8123:8123     -v /your/music:/music     -v /your/playlists:/var/lib/mpd/playlists music
+#docker run   --rm -it -d     --name mpd     --device /dev/snd     -p 6600:6600     -p 8123:8123     -v /your/music:/music     -v /your/playlists:/var/lib/mpd/playlists music
 
 ARG VERSION
 #python3 py3-flask py3-flask-cors
 RUN set -ex && \
-    apk add --no-cache mpd && \
+    apk add --no-cache mpd mpc python3 py3-flask py3-flask-cors sed bash && \
     mkdir -p /var/lib/mpd/playlists && \
     mkdir -p /music && \
+    mkdir -p /sound && \
     touch /var/lib/mpd/database \
         /var/lib/mpd/mpd.pid \
         /var/lib/mpd/state \
@@ -18,7 +19,15 @@ COPY mpd.conf /etc/mpd.conf
 WORKDIR /topper
 VOLUME /var/lib/mpd
 
-EXPOSE 6600 8123
+EXPOSE 6600 1310 8123
+#mpd ,server.py , http sound interface
 
-#RUN  mpd --stdout --no-daemon && python3 /topper/server.py &
-CMD ["mpd", "--stdout", "--no-daemon"]
+COPY serverplus /usr/local/bin
+COPY server.py /topper
+COPY update /topper
+COPY setup /topper
+COPY mpcserver /topper
+COPY mpcserver.service /topper
+RUN sed -i "s|/home/pi|/topper|g" server.py
+RUN sed -i "s|/topper/mpcserver|/topper|g" server.py
+CMD ["serverplus", "--stdout", "--no-daemon"]

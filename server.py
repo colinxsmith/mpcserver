@@ -72,6 +72,7 @@ def index():
         if insert != None:
             insert = insert.replace('%26', '&')
             insert = insert.replace('%2f', '/')
+
             insert = insert.replace('%58', ':')
             insert = insert.replace('%20', ' ')
             insert = insert.replace('%59', ';')
@@ -84,6 +85,7 @@ def index():
             insert_station = insert_station.replace('%58', ':')
             insert_station = insert_station.replace('%20', ' ')
             insert_station = insert_station.replace('%2f', '/')
+
             insert_station = insert_station.replace('%59', ';')
             insert_station = insert_station.replace('%21', '!')
             insert_station = insert_station.replace('%23', '#')
