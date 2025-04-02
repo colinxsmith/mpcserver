@@ -67,10 +67,10 @@ def index():
         back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
         if move != None:
             move = move.split(' ')
-            back["move"]= move
+            back['move']= move
             subprocess.getoutput('mpc move %s %s'%(move[0],move[1]))
         if insert != None:
-            insert = insert.replace('%26', '&')
+            #insert = insert.replace('%26', '&')
             insert = insert.replace('%2f', '/')
 
             insert = insert.replace('%58', ':')
@@ -78,10 +78,11 @@ def index():
             insert = insert.replace('%59', ';')
             insert = insert.replace('%21', '!')
             insert = insert.replace('%23', '#')
-            back['inserted'] = subprocess.getoutput('mpc insert "%s" ' % insert)
+            insert = '"'+insert+'"'
+            back['inserted'] = subprocess.getoutput('mpc insert %s ' % insert)
 
         if insert_station != None:
-            insert_station = insert_station.replace('%26', '&')
+            #insert_station = insert_station.replace('%26','&')
             insert_station = insert_station.replace('%58', ':')
             insert_station = insert_station.replace('%20', ' ')
             insert_station = insert_station.replace('%2f', '/')
@@ -89,8 +90,10 @@ def index():
             insert_station = insert_station.replace('%59', ';')
             insert_station = insert_station.replace('%21', '!')
             insert_station = insert_station.replace('%23', '#')
-            back['inserted_station'] = subprocess.getoutput(
-                'mpc insert "%s" ' % insert_station
+            insert_station = '"'+insert_station+'"'
+            back['inserted_station'] = insert_station
+            back['inserted_station'] += subprocess.getoutput(
+                'mpc insert %s ' % insert_station
             )
 
         if record != None:
