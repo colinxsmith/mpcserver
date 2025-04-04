@@ -1,0 +1,5 @@
+FROM alpine:latest AS build
+RUN apk add ffmpeg
+
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -c: copy back.m4a
+RUN ffmpeg -i back.m4a -ab 192k back.mp3

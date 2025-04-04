@@ -1,11 +1,11 @@
 FROM alpine:latest AS build
 #docker build -f Dockermpd --no-cache -t music .
-#docker run   --rm -it -d     --name mpd     --device /dev/snd     -p 6600:6600     -p 8123:8123     -v /your/music:/music     -v /your/playlists:/var/lib/mpd/playlists music
+#docker run   --rm  -d     --name mpd     --device /dev/snd  -p 2610:1310   -p 6600:6600     -p 8123:8123     -v //home/colin/Music:/music     -v /home/colin/playlists:/var/lib/mpd/playlists music
 
 ARG VERSION
 #python3 py3-flask py3-flask-cors
 RUN set -ex && \
-    apk add --no-cache mpd mpc python3 py3-flask py3-flask-cors sed bash && \
+    apk add --no-cache mpd mpc python3 py3-flask py3-flask-cors sed bash ffmpeg && \
     mkdir -p /var/lib/mpd/playlists && \
     mkdir -p /music && \
     mkdir -p /sound && \
