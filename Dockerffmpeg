@@ -1,5 +1,13 @@
-FROM alpine:latest AS build
-RUN apk add ffmpeg
+FROM mcr.microsoft.com/dotnet/aspnet:latest AS build
+RUN apt update && apt upgrade -y
+RUN apt install -y ffmpeg mediainfo vim id3v2 cron
 
+#docker build -f Dockerffmpeg -t musicdown .
+#docker run --rm -it -v /home/colin/Music:/files --name down musicdown
+
+RUN mkdir /files
 RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -c: copy back.m4a
-RUN ffmpeg -i back.m4a -ab 192k back.mp3
+RUN ffmpeg -i back.m4a -ab $(mediainfo back.m4a | sed -n "/Bit.*kb/s|[A-Z]*[a-z]*\ *:*/*||gp")k back.mp3
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -ab 320k back1.mp3
+RUN id3v2 -t "Download copy" -a Radio6 back.mp3
+RUN id3v2 -t Download -a Radio6 back1.mp3
