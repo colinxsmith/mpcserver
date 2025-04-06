@@ -25,7 +25,8 @@ def add_headers(response):
 def helloWorld():
     wfm='wfm1.mp3'
     back = {}
-    back['status'] = subprocess.getoutput('mpc')
+    back['status'] = subprocess.getoutput('date')
+    back['status'] += subprocess.getoutput('mpc')
     back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
     back['stations'] = subprocess.getoutput(
         'cat  /home/pi/sound/WorldwideFM.m3u'
@@ -132,7 +133,8 @@ def index():
                 subprocess.getoutput('mpc seek %s' % seek)
             elif seek != '-1':
                 subprocess.getoutput('mpc seek %s' % seek + '%')
-        back['status'] = subprocess.getoutput('mpc')
+        back['status'] = subprocess.getoutput('date')
+        back['status'] += subprocess.getoutput('mpc')
         if filemp3 != None:
             back['filemp3'] = '/home/pi/sound/' + filemp3
             print('cp %s /home/pi/Music/j3hour.mp3' % back['filemp3'])
