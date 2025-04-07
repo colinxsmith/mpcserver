@@ -103,6 +103,7 @@ def index():
                 'ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/sound/%s'
                 % (record,wfm)
             )
+            subprocess.getoutput('id3v2 -c "$(uname -a)" '+' /home/pi/sound/%s '%wfm)
             subprocess.getoutput('id3v2 -y $(date +%Y)'+' /home/pi/sound/%s '%wfm)
             subprocess.getoutput('id3v2 -a "$(date +%d-%B) Recording"'+' /home/pi/sound/%s'%wfm)
             subprocess.getoutput(
