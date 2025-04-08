@@ -11,3 +11,10 @@ RUN ffmpeg -i back.m4a -ab $(mediainfo back.m4a | sed -n "/Bit.*kb/s|[A-Z]*[a-z]
 RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -ab 320k back1.mp3
 RUN id3v2 -t "Download copy" -a Radio6 back.mp3
 RUN id3v2 -t Download -a Radio6 back1.mp3
+RUN git config --global user.email colinxsmith@gmail.com
+RUN git config --global user.name Colin 
+RUN git config --global credential.helper store && git pull
+RUN git config --global core.editor "vim"
+RUN apt install sudo
+RUN useradd -m -N -s /bin/bash -u 1000 -p 'biR9RL/wHdLAo' colin && usermod -aG sudo colin
+USER colin

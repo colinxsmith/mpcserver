@@ -30,4 +30,11 @@ COPY mpcserver.service /topper/mpcserver
 RUN sed -i "s|/home/pi|/topper|g" server.py
 RUN sed "s/sudo//g;/status/d" setup | sh
 EXPOSE 1310
+RUN git config --global user.email colinxsmith@gmail.com
+RUN git config --global user.name Colin 
+RUN git config --global credential.helper store && git pull
+RUN git config --global core.editor "vim"
+RUN apt install sudo
+RUN useradd -m -N -s /bin/bash -u 1000 -p 'biR9RL/wHdLAo' colin && usermod -aG sudo colin
+USER colin
 CMD ["/mvenv/bin/python3","server.py"]
