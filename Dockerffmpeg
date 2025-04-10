@@ -1,20 +1,22 @@
 FROM mcr.microsoft.com/dotnet/aspnet:latest AS build
 RUN apt update && apt upgrade -y
-RUN apt install -y ffmpeg mediainfo vim id3v2 cron
+RUN apt install -y ffmpeg mediainfo vim id3v2
 
 #docker build -f Dockerffmpeg -t musicdown .
 #docker run --rm -it -v /home/colin/Music:/files --name down musicdown
 
 RUN mkdir /files
-RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -c: copy back.m4a
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -to 05\:00 -c: copy back.m4a
 RUN ffmpeg -i back.m4a -ab $(mediainfo back.m4a | sed -n "/Bit.*kb/s|[A-Z]*[a-z]*\ *:*/*||gp")k back.mp3
-RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -t 100 -ab 320k back1.mp3
-RUN id3v2 -t "Download copy" -a Radio6 back.mp3
-RUN id3v2 -t Download -a Radio6 back1.mp3
-RUN git config --global user.email colinxsmith@gmail.com
-RUN git config --global user.name Colin 
-RUN git config --global credential.helper store && git pull
-RUN git config --global core.editor "vim"
+
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -to 05\:00 -ab 320k back1.mp3
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -c: copy -to 05\:00 bback.m4a
+RUN ffmpeg -i bback.m4a -ab $(mediainfo bback.m4a | sed -n "/Bit.*kb/s|[A-Z]*[a-z]*\ *:*/*||gp")k bback.mp3
+RUN ffmpeg -i "https://lstn.lv/bbcradio.m3u8?station=bbc_6music&bitrate=320000" -ab 320k  -to 05\:00 bback1.mp3
+RUN id3v2 -t "copy $(date) download" -a Radio6  -A "$(uname -a)" back.mp3
+RUN id3v2 -t "$(date) download" -a Radio6 -A "$(uname -a)" back1.mp3
+RUN id3v2 -t "copy $(date) download" -a Radio6  -A "$(uname -a)" bback.mp3
+RUN id3v2 -t "$(date) download" -a Radio6 -A "$(uname -a)" bback1.mp3
 RUN apt install sudo
 RUN useradd -m -N -s /bin/bash -u 1000 -p 'biR9RL/wHdLAo' colin && usermod -aG sudo colin
 USER colin
