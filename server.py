@@ -50,6 +50,7 @@ def helloWorld():
 def index():
     wfm='wfm1.mp3'
     if request.method == 'GET':
+        names=request.args.get('names');
         record = request.args.get('record')
         value = request.args.get('value')
         seek = request.args.get('seek')
@@ -70,6 +71,10 @@ def index():
         if filemp3 != None:
             back['filemp3'] = '/home/pi/sound/' + filemp3
         back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
+        if names!=None:
+            use=names
+            if names=='1':use=''
+            subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a 30 > /home/pi/name`date +\%d-\%m-\%Y-\%T`'%(use))
         if move != None:
             move = move.split(' ')
             back['move']= move
