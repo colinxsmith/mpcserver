@@ -1,3 +1,7 @@
+#Install flask on raspberry pi using
+#sudo apt install python3-flask
+#sudo apt install python3-flask-cors
+####################################
 from flask import Flask, request
 from flask_cors import CORS
 
