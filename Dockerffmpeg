@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:latest AS build
 RUN apt update && apt upgrade -y
-RUN apt install -y ffmpeg mediainfo vim id3v2
+RUN apt install -y ffmpeg mediainfo vim id3v2 sudo
 
 #docker build -f Dockerffmpeg -t musicdown .
 #docker run --rm -it -v /home/colin/Music:/files --name down musicdown
@@ -17,6 +17,5 @@ RUN id3v2 -t "copy $(date) download" -a Radio6  -A "$(uname -a)" back.mp3
 RUN id3v2 -t "$(date) download" -a Radio6 -A "$(uname -a)" back1.mp3
 RUN id3v2 -t "copy $(date) download" -a Radio6  -A "$(uname -a)" bback.mp3
 RUN id3v2 -t "$(date) download" -a Radio6 -A "$(uname -a)" bback1.mp3
-RUN apt install sudo
 RUN useradd -m -N -s /bin/bash -u 1000 -p 'biR9RL/wHdLAo' colin && usermod -aG sudo colin
 USER colin
