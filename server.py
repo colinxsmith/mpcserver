@@ -50,7 +50,10 @@ def helloWorld():
 def index():
     wfm='wfm1.mp3'
     if request.method == 'GET':
+        record6=request.args.get('record6')
+        record6time=request.args.get('record6time')
         names=request.args.get('names');
+        namestime=request.args.get('namestime');
         record = request.args.get('record')
         value = request.args.get('value')
         seek = request.args.get('seek')
@@ -71,11 +74,23 @@ def index():
         if filemp3 != None:
             back['filemp3'] = '/home/pi/sound/' + filemp3
         back['mp3files'] = subprocess.getoutput('ls /home/pi/sound/*.mp3').split('\n')
+        if record6!=None:
+            ntime='01:00'
+            if record6time!=None:
+                ntime=record6time
+            use=record6
+            if record6=='1':use=''
+            logfile='/home/pi/record6$(date +%d-%m-%Y-%T)'
+            back['record6log']=subprocess.getoutput('/home/pi/sound/record %s > %s'%(ntime,logfile))
+            back['record6log']=subprocess.getoutput('grep record %s'%(logfile))
         if names!=None:
+            ntime='01:00'
+            if namestime!=None:
+                ntime=namestime
             use=names
             if names=='1':use=''
             logfile='/home/pi/name$(date +%d-%m-%Y-%T)'
-            back['nameslog']=subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a 01:00 > %s'%(use,logfile))
+            back['nameslog']=subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a %s > %s'%(use,ntime,logfile))
         if move != None:
             move = move.split(' ')
             back['move']= move
