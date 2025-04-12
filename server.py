@@ -75,7 +75,7 @@ def index():
             use=names
             if names=='1':use=''
             logfile='/home/pi/name$(date +%d-%m-%Y-%T)'
-            subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a 01:00 > %s'%(use,logfile))
+            back['nameslog']=subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a 01:00 > %s'%(use,logfile))
         if move != None:
             move = move.split(' ')
             back['move']= move
