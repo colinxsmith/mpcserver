@@ -92,7 +92,10 @@ def index():
             logfile='/home/pi/name$(date +%d-%m-%Y-%T)'
             back['nameslog']=subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a %s > %s'%(use,ntime,logfile))
         if move != None:
+            topnum=len(back['playlist'])
             move = move.split(' ')
+            if move[0].upper().find('L')>-1:
+                move[0]='%d'%(topnum)
             back['move']= move
             subprocess.getoutput('mpc move %s %s'%(move[0],move[1]))
         if insert != None:
