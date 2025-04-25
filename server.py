@@ -81,7 +81,7 @@ def index():
             use=record6
             if record6=='1':use=''
             logfile='/home/pi/record6$(date +%d-%m-%Y-%T)'
-            back['record6log']=subprocess.getoutput('/home/pi/sound/record %s > %s'%(ntime,logfile))
+            back['record6log']=subprocess.getoutput('/home/pi/sound/record %s pi > %s'%(ntime,logfile))
             back['record6log']=subprocess.getoutput('grep record %s'%(logfile))
         if names!=None:
             ntime='01:00'
