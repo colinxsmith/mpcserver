@@ -2,7 +2,9 @@
 FROM python:3-slim
 
 #Written by COPILOT
-
+#docker build  -t test .
+#docker run -it --rm -p1310:1310 -v /home/colin/Music:/app/sound  --name=colin test
+#docker image rm test
 
 # This container is used to control the mpcserver on the laptop from this container
 
