@@ -80,7 +80,7 @@ def index():
                 ntime=record6time
             use=record6
             if record6=='1':use=''
-            logfile='/home/pi/record6$(date +%d-%m-%Y-%T)'
+            logfile='/home/pi/record6$(date +%a-%d-%m-%Y-%T)'
             back['record6log']=subprocess.getoutput('/home/pi/sound/record %s pi > %s'%(ntime,logfile))
             back['record6log']=subprocess.getoutput('grep record %s'%(logfile))
         if names!=None:
@@ -89,7 +89,7 @@ def index():
                 ntime=namestime
             use=names
             if names=='1':use=''
-            logfile='/home/pi/name$(date +%d-%m-%Y-%T)'
+            logfile='/home/pi/name$(date +%a-%d-%m-%Y-%T)'
             back['nameslog']=subprocess.getoutput('/home/pi/sound/names_in_songs names%s.m4a %s > %s'%(use,ntime,logfile))
         if move != None:
             topnum=len(back['playlist'])
@@ -133,7 +133,7 @@ def index():
             )
             subprocess.getoutput('id3v2 -c "$(date +%a-%d-%m-%Y) $(uname -a)" '+' /home/pi/sound/%s '%wfm)
             subprocess.getoutput('id3v2 -y $(date +%Y)'+' /home/pi/sound/%s '%wfm)
-            subprocess.getoutput('id3v2 -a "$(date +%d-%B) Recording"'+' /home/pi/sound/%s'%wfm)
+            subprocess.getoutput('id3v2 -a "$(date +%a-%d-%B) Recording"'+' /home/pi/sound/%s'%wfm)
             subprocess.getoutput(
                 'id3v2 -t "World Wide FM (%s secs)" /home/pi/sound/%s'
                 % (record,wfm)
