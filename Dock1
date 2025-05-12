@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+
+
+#docker build -f Dock1 --no-cache   -t radio .
+#docker run  -it --rm -v /home/colin/Music:/topper/radio --name=colin  radio
+#docker image rm radio
+
+RUN apt update && apt upgrade -y && apt install -y ffmpeg
+
+WORKDIR /topper
+RUN mkdir radio
+WORKDIR /topper/radio
