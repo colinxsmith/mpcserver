@@ -122,7 +122,7 @@ def index():
             insert_station = '"'+insert_station+'"'
             back['inserted_station'] = insert_station
             back['inserted_station'] += subprocess.getoutput(
-                'mpc insert %s ' % insert_station
+                'mpc add %s ' % insert_station
             )
 
         if record != None:
