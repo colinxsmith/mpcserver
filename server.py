@@ -128,7 +128,7 @@ def index():
         if record != None:
             back['report_record'] = subprocess.getoutput('rm /home/pi/sound/%s'%wfm)
             back['report_record'] += subprocess.getoutput(
-                'ffmpeg -i "http://worldwidefm.out.airtime.pro:8000/worldwidefm_a" -t %s -c copy /home/pi/sound/%s'
+                'ffmpeg -i "https://worldwide-fm.radiocult.fm/stream" -t %s -c copy /home/pi/sound/%s'
                 % (record,wfm)
             )
             subprocess.getoutput('id3v2 -c "$(date +%a-%d-%m-%Y) $(uname -a)" '+' /home/pi/sound/%s '%wfm)
